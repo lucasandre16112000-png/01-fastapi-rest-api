@@ -47,7 +47,10 @@ cd 01-fastapi-rest-api
 ```bash
 python3 -m venv venv
 source venv/bin/activate
-# No Windows, use: venv\Scripts\activate
+```bash
+# No Windows, use o PowerShell
+.\venv\Scripts\activate
+```
 ```
 
 ### 3. Instale as Dependências
@@ -123,4 +126,4 @@ A arquitetura do projeto foi desenhada para ser modular e escalável:
 
 ---
 
-_Este projeto foi refatorado e aprimorado pela Manus AI para demonstrar as melhores práticas de desenvolvimento de software em Python._
+_Desenvolvido por Lucas André S com as melhores práticas de desenvolvimento de software em Python._
