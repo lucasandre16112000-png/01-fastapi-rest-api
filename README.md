@@ -23,6 +23,7 @@ Esta API foi desenvolvida para ser um exemplo de como construir um serviço web 
 - **Testes Unitários e de Integração**: Cobertura de testes completa com `pytest` para garantir a qualidade e a estabilidade do código.
 - **Configuração por Ambiente**: Gerenciamento de configurações sensíveis através de variáveis de ambiente (`.env`).
 - **Documentação Automática**: Interface do Swagger UI e ReDoc gerada automaticamente pelo FastAPI.
+- **Compatibilidade Cross-Platform**: Funciona perfeitamente no Windows, Linux e macOS.
 
 ## 🚀 Começando
 
@@ -32,6 +33,8 @@ Siga os passos abaixo para configurar e rodar o projeto em seu ambiente local.
 
 - Python 3.9 ou superior
 - `pip` e `venv`
+
+> **Para usuários do Windows**: Veja o [Guia de Instalação Windows](./WINDOWS_SETUP.md) para instruções detalhadas e scripts de automação.
 
 ### 1. Clone o Repositório
 
@@ -44,14 +47,28 @@ cd 01-fastapi-rest-api
 
 É uma boa prática usar um ambiente virtual para isolar as dependências do projeto.
 
+**No Linux/macOS:**
 ```bash
 python3 -m venv venv
 source venv/bin/activate
+```
+
+**No Windows (Prompt de Comando):**
 ```bash
-# No Windows, use o PowerShell
-.\venv\Scripts\activate
+python -m venv venv
+venv\Scripts\activate.bat
 ```
+
+**No Windows (PowerShell):**
+```bash
+python -m venv venv
+venv\Scripts\Activate.ps1
 ```
+
+> **Dica**: Se receber erro de permissão no PowerShell, execute:
+> ```bash
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
 
 ### 3. Instale as Dependências
 
@@ -61,7 +78,13 @@ pip install -r requirements.txt
 
 ### 4. Configure as Variáveis de Ambiente
 
-Crie um arquivo `.env` na raiz do projeto, copiando o exemplo `.env.example` (se houver) ou criando um novo com o seguinte conteúdo:
+Crie um arquivo `.env` na raiz do projeto, copiando o exemplo `.env.example`:
+
+```bash
+copy .env.example .env
+```
+
+Edite o arquivo `.env` e atualize os valores conforme necessário:
 
 ```
 SECRET_KEY=seu_segredo_super_secreto
@@ -96,33 +119,74 @@ Para garantir que tudo está funcionando como esperado, rode a suíte de testes 
 pytest
 ```
 
+Ou com mais detalhes:
+
+```bash
+pytest -v
+```
+
 ## 📂 Estrutura do Projeto
 
 A arquitetura do projeto foi desenhada para ser modular e escalável:
 
 ```
-/app
-├── __init__.py
-├── core/               # Configurações centrais e segurança
+01-fastapi-rest-api/
+├── app/                    # Código principal da aplicação
 │   ├── __init__.py
-│   ├── config.py       # Gerenciamento de configurações
-│   └── security.py     # Funções de hashing e JWT
-├── crud.py             # Funções de interação com o banco de dados (CRUD)
-├── database.py         # Configuração da conexão com o banco de dados
-├── dependencies.py     # Dependências reutilizáveis (ex: autenticação)
-├── main.py             # Ponto de entrada da aplicação FastAPI
-├── models.py           # Modelos de dados SQLAlchemy
-├── routers/            # Endpoints da API
-│   ├── __init__.py
-│   ├── tasks.py        # Endpoints para tarefas
-│   └── users.py        # Endpoints para usuários e autenticação
-├── schemas.py          # Schemas Pydantic para validação de dados
-└── tests/              # Testes unitários e de integração
-    ├── __init__.py
-    ├── test_main.py
-    ├── test_tasks.py
-    └── test_users.py
+│   ├── core/              # Configurações centrais e segurança
+│   │   ├── __init__.py
+│   │   ├── config.py      # Gerenciamento de configurações
+│   │   └── security.py    # Funções de hashing e JWT
+│   ├── crud.py            # Funções de interação com o banco de dados (CRUD)
+│   ├── database.py        # Configuração da conexão com o banco de dados
+│   ├── dependencies.py    # Dependências reutilizáveis (ex: autenticação)
+│   ├── main.py            # Ponto de entrada da aplicação FastAPI
+│   ├── models.py          # Modelos de dados SQLAlchemy
+│   ├── routers/           # Endpoints da API
+│   │   ├── __init__.py
+│   │   ├── tasks.py       # Endpoints para tarefas
+│   │   └── users.py       # Endpoints para usuários e autenticação
+│   ├── schemas.py         # Schemas Pydantic para validação de dados
+│   └── tests/             # Testes unitários e de integração
+│       ├── __init__.py
+│       ├── test_main.py
+│       ├── test_tasks.py
+│       └── test_users.py
+├── venv/                  # Ambiente virtual (criado automaticamente)
+├── .env                   # Variáveis de ambiente (crie a partir de .env.example)
+├── .env.example           # Exemplo de variáveis de ambiente
+├── requirements.txt       # Dependências do projeto
+├── main.py               # Ponto de entrada alternativo
+├── run.bat               # Script para executar no Windows (Prompt de Comando)
+├── run.ps1               # Script para executar no Windows (PowerShell)
+├── setup.bat             # Script de setup inicial para Windows
+├── README.md             # Documentação principal
+└── WINDOWS_SETUP.md      # Guia detalhado para Windows
 ```
+
+## 🪟 Compatibilidade Windows
+
+Este projeto foi otimizado para funcionar perfeitamente no Windows! Recursos incluem:
+
+- ✅ Caminhos de arquivo cross-platform (usando `pathlib`)
+- ✅ Scripts batch e PowerShell para automação
+- ✅ Guia detalhado de instalação para Windows
+- ✅ Suporte completo a variáveis de ambiente
+
+Veja [WINDOWS_SETUP.md](./WINDOWS_SETUP.md) para mais detalhes.
+
+## 🔐 Segurança
+
+**IMPORTANTE**: Antes de colocar em produção:
+
+1. **Gere uma SECRET_KEY forte**:
+   ```bash
+   python -c "import secrets; print(secrets.token_urlsafe(32))"
+   ```
+
+2. **Atualize o arquivo `.env`** com a chave gerada
+
+3. **Nunca** compartilhe o arquivo `.env` ou a `SECRET_KEY`
 
 ---
 
