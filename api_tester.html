@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Testador de API FastAPI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .status-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.online {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .status-dot.offline {
+            background: #ef4444;
+        }
+
+        .api-url {
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+        }
+
+        .endpoints-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .endpoint-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .endpoint-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .endpoint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .endpoint-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .method-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+        }
+
+        .method-get {
+            background: #3b82f6;
+        }
+
+        .method-post {
+            background: #10b981;
+        }
+
+        .method-put {
+            background: #f59e0b;
+        }
+
+        .method-delete {
+            background: #ef4444;
+        }
+
+        .method-patch {
+            background: #8b5cf6;
+        }
+
+        .endpoint-description {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .endpoint-path {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            color: #333;
+            margin-bottom: 15px;
+            word-break: break-all;
+            border-left: 3px solid #667eea;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .btn-test {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-test:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-test:active {
+            transform: scale(0.98);
+        }
+
+        .btn-clear {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-clear:hover {
+            background: #e0e0e0;
+        }
+
+        .result-section {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .result-status {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .status-success {
+            color: #10b981;
+        }
+
+        .status-error {
+            color: #ef4444;
+        }
+
+        .status-pending {
+            color: #f59e0b;
+        }
+
+        .result-data {
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            color: #333;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 5px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .endpoints-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-bar {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Testador de API FastAPI</h1>
+            <p>Teste todos os endpoints com um clique</p>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-dot online" id="statusDot"></div>
+                <span>Status da API: <span id="statusText">Verificando...</span></span>
+            </div>
+            <div class="status-item">
+                <span class="api-url" id="apiUrl">http://127.0.0.1:8000</span>
+            </div>
+        </div>
+
+        <div class="endpoints-grid" id="endpointsContainer">
+            <!-- Endpoints serão inseridos aqui -->
+        </div>
+
+        <div class="footer">
+            <p>💡 Dica: Todos os testes são executados em tempo real contra a API</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000';
+        let authToken = null;
+        let testUserId = null;
+
+        // Endpoints para testar
+        const endpoints = [
+            {
+                id: 'health',
+                title: 'Health Check',
+                method: 'GET',
+                path: '/api/v1/health',
+                description: 'Verifica se a API está online',
+                inputs: [],
+                requiresAuth: false
+            },
+            {
+                id: 'create-user',
+                title: 'Criar Usuário',
+                method: 'POST',
+                path: '/api/v1/users/',
+                description: 'Cria um novo usuário no sistema',
+                inputs: [
+                    { name: 'email', label: 'Email', type: 'email', placeholder: 'user@example.com', required: true },
+                    { name: 'password', label: 'Senha', type: 'password', placeholder: 'senha123', required: true }
+                ],
+                requiresAuth: false,
+                defaultValues: {
+                    email: 'testuser@example.com',
+                    password: 'password123'
+                }
+            },
+            {
+                id: 'login',
+                title: 'Login (Obter Token)',
+                method: 'POST',
+                path: '/api/v1/token',
+                description: 'Faz login e obtém um token JWT',
+                inputs: [
+                    { name: 'username', label: 'Email', type: 'email', placeholder: 'user@example.com', required: true },
+                    { name: 'password', label: 'Senha', type: 'password', placeholder: 'senha123', required: true }
+                ],
+                requiresAuth: false,
+                defaultValues: {
+                    username: 'testuser@example.com',
+                    password: 'password123'
+                }
+            },
+            {
+                id: 'get-me',
+                title: 'Obter Dados do Usuário',
+                method: 'GET',
+                path: '/api/v1/users/me/',
+                description: 'Retorna os dados do usuário autenticado',
+                inputs: [],
+                requiresAuth: true
+            },
+            {
+                id: 'create-task',
+                title: 'Criar Tarefa',
+                method: 'POST',
+                path: '/api/v1/tasks/',
+                description: 'Cria uma nova tarefa',
+                inputs: [
+                    { name: 'title', label: 'Título', type: 'text', placeholder: 'Minha tarefa', required: true },
+                    { name: 'description', label: 'Descrição', type: 'textarea', placeholder: 'Descrição da tarefa', required: false },
+                    { name: 'priority', label: 'Prioridade', type: 'number', placeholder: '1', required: true }
+                ],
+                requiresAuth: true,
+                defaultValues: {
+                    title: 'Tarefa de Teste',
+                    description: 'Esta é uma tarefa de teste',
+                    priority: 1
+                }
+            },
+            {
+                id: 'list-tasks',
+                title: 'Listar Tarefas',
+                method: 'GET',
+                path: '/api/v1/tasks/',
+                description: 'Lista todas as tarefas do usuário',
+                inputs: [],
+                requiresAuth: true
+            },
+            {
+                id: 'get-task',
+                title: 'Obter Tarefa Específica',
+                method: 'GET',
+                path: '/api/v1/tasks/{task_id}',
+                description: 'Obtém os detalhes de uma tarefa específica',
+                inputs: [
+                    { name: 'task_id', label: 'ID da Tarefa', type: 'number', placeholder: '1', required: true }
+                ],
+                requiresAuth: true
+            },
+            {
+                id: 'update-task',
+                title: 'Atualizar Tarefa',
+                method: 'PUT',
+                path: '/api/v1/tasks/{task_id}',
+                description: 'Atualiza uma tarefa existente',
+                inputs: [
+                    { name: 'task_id', label: 'ID da Tarefa', type: 'number', placeholder: '1', required: true },
+                    { name: 'title', label: 'Novo Título', type: 'text', placeholder: 'Novo título', required: true },
+                    { name: 'description', label: 'Nova Descrição', type: 'textarea', placeholder: 'Nova descrição', required: false },
+                    { name: 'priority', label: 'Nova Prioridade', type: 'number', placeholder: '1', required: true }
+                ],
+                requiresAuth: true
+            },
+            {
+                id: 'delete-task',
+                title: 'Deletar Tarefa',
+                method: 'DELETE',
+                path: '/api/v1/tasks/{task_id}',
+                description: 'Deleta uma tarefa',
+                inputs: [
+                    { name: 'task_id', label: 'ID da Tarefa', type: 'number', placeholder: '1', required: true }
+                ],
+                requiresAuth: true
+            }
+        ];
+
+        // Verificar status da API
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(`${API_URL}/api/v1/health`);
+                if (response.ok) {
+                    document.getElementById('statusDot').className = 'status-dot online';
+                    document.getElementById('statusText').textContent = '🟢 Online';
+                } else {
+                    setOffline();
+                }
+            } catch (error) {
+                setOffline();
+            }
+        }
+
+        function setOffline() {
+            document.getElementById('statusDot').className = 'status-dot offline';
+            document.getElementById('statusText').textContent = '🔴 Offline';
+        }
+
+        // Criar cards dos endpoints
+        function createEndpointCards() {
+            const container = document.getElementById('endpointsContainer');
+            
+            endpoints.forEach(endpoint => {
+                const card = document.createElement('div');
+                card.className = 'endpoint-card';
+                
+                let inputsHTML = '';
+                if (endpoint.inputs.length > 0) {
+                    inputsHTML = endpoint.inputs.map(input => {
+                        const defaultValue = endpoint.defaultValues?.[input.name] || '';
+                        if (input.type === 'textarea') {
+                            return `
+                                <div class="input-group">
+                                    <label>${input.label}</label>
+                                    <textarea 
+                                        id="${endpoint.id}-${input.name}"
+                                        placeholder="${input.placeholder}"
+                                        ${input.required ? 'required' : ''}
+                                    >${defaultValue}</textarea>
+                                </div>
+                            `;
+                        } else {
+                            return `
+                                <div class="input-group">
+                                    <label>${input.label}</label>
+                                    <input 
+                                        type="${input.type}"
+                                        id="${endpoint.id}-${input.name}"
+                                        placeholder="${input.placeholder}"
+                                        value="${defaultValue}"
+                                        ${input.required ? 'required' : ''}
+                                    />
+                                </div>
+                            `;
+                        }
+                    }).join('');
+                }
+
+                card.innerHTML = `
+                    <div class="endpoint-header">
+                        <div class="endpoint-title">${endpoint.title}</div>
+                        <div class="method-badge method-${endpoint.method.toLowerCase()}">${endpoint.method}</div>
+                    </div>
+                    <div class="endpoint-description">${endpoint.description}</div>
+                    <div class="endpoint-path">${endpoint.path}</div>
+                    ${inputsHTML}
+                    <div class="button-group">
+                        <button class="btn btn-test" onclick="testEndpoint('${endpoint.id}')">
+                            🚀 Testar
+                        </button>
+                        ${inputsHTML ? `<button class="btn btn-clear" onclick="clearInputs('${endpoint.id}')">🗑️ Limpar</button>` : ''}
+                    </div>
+                    <div class="result-section" id="result-${endpoint.id}">
+                        <div class="result-status" id="status-${endpoint.id}"></div>
+                        <div class="result-data" id="data-${endpoint.id}"></div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Testar endpoint
+        async function testEndpoint(endpointId) {
+            const endpoint = endpoints.find(e => e.id === endpointId);
+            const resultSection = document.getElementById(`result-${endpointId}`);
+            const statusElement = document.getElementById(`status-${endpointId}`);
+            const dataElement = document.getElementById(`data-${endpointId}`);
+
+            resultSection.classList.add('show');
+            statusElement.innerHTML = '<span class="loading"></span>Testando...';
+            statusElement.className = 'result-status status-pending';
+
+            try {
+                // Preparar URL e dados
+                let url = `${API_URL}${endpoint.path}`;
+                let options = {
+                    method: endpoint.method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                // Adicionar token se necessário
+                if (endpoint.requiresAuth && authToken) {
+                    options.headers['Authorization'] = `Bearer ${authToken}`;
+                }
+
+                // Preparar dados do corpo
+                let body = {};
+                if (endpoint.method !== 'GET' && endpoint.method !== 'DELETE') {
+                    endpoint.inputs.forEach(input => {
+                        const value = document.getElementById(`${endpointId}-${input.name}`)?.value;
+                        if (input.name !== 'task_id') {
+                            if (input.type === 'number') {
+                                body[input.name] = parseInt(value) || 0;
+                            } else {
+                                body[input.name] = value;
+                            }
+                        }
+                    });
+                    options.body = JSON.stringify(body);
+                }
+
+                // Substituir {task_id} na URL
+                const taskIdInput = document.getElementById(`${endpointId}-task_id`);
+                if (taskIdInput) {
+                    url = url.replace('{task_id}', taskIdInput.value);
+                }
+
+                // Fazer requisição
+                const response = await fetch(url, options);
+                const data = await response.json();
+
+                // Salvar token se for login
+                if (endpointId === 'login' && data.access_token) {
+                    authToken = data.access_token;
+                    console.log('Token salvo:', authToken);
+                }
+
+                // Salvar ID do usuário se for criação
+                if (endpointId === 'create-user' && data.id) {
+                    testUserId = data.id;
+                }
+
+                // Exibir resultado
+                if (response.ok) {
+                    statusElement.innerHTML = `✅ Sucesso (${response.status})`;
+                    statusElement.className = 'result-status status-success';
+                } else {
+                    statusElement.innerHTML = `❌ Erro (${response.status})`;
+                    statusElement.className = 'result-status status-error';
+                }
+
+                dataElement.textContent = JSON.stringify(data, null, 2);
+
+            } catch (error) {
+                statusElement.innerHTML = `❌ Erro: ${error.message}`;
+                statusElement.className = 'result-status status-error';
+                dataElement.textContent = error.message;
+            }
+        }
+
+        // Limpar inputs
+        function clearInputs(endpointId) {
+            const endpoint = endpoints.find(e => e.id === endpointId);
+            endpoint.inputs.forEach(input => {
+                const element = document.getElementById(`${endpointId}-${input.name}`);
+                if (element) {
+                    element.value = endpoint.defaultValues?.[input.name] || '';
+                }
+            });
+        }
+
+        // Inicializar
+        window.addEventListener('load', () => {
+            checkApiStatus();
+            createEndpointCards();
+            
+            // Verificar status a cada 5 segundos
+            setInterval(checkApiStatus, 5000);
+        });
+    </script>
+</body>
+</html>
