@@ -47,12 +47,12 @@ This API is a complete example of how to build a modern, secure, and scalable we
 
 **For Windows Users (Easiest Method):**
 
-1. Download the ZIP file from GitHub: [https://github.com/lucasandre16112000-png/01-fastapi-rest-api](https://github.com/lucasandre16112000-png/01-fastapi-rest-api)
+1. Download the ZIP file from GitHub
 2. Extract the ZIP file to your Desktop or Documents folder
 3. Inside the extracted folder, find **`COMECE_AQUI.bat`**
 4. **Double-click** on `COMECE_AQUI.bat`
 5. Wait for the process to complete (it may take a few minutes on first run)
-6. Your browser will automatically open with the API documentation
+6. Your browser will automatically open with the API documentation at: **http://127.0.0.1:8000/docs**
 
 **The script will automatically:**
 
@@ -80,7 +80,6 @@ You need to install these programs manually:
 
 **1. Python 3.9 or Higher**
 
-- Visit: [https://www.python.org/downloads/](https://www.python.org/downloads/)
 - Download Python 3.9 or higher (recommended: Python 3.10 or 3.11)
 - **IMPORTANT**: During installation, check the box **"Add Python to PATH"**
 - Click "Install Now"
@@ -91,21 +90,15 @@ You need to install these programs manually:
 python --version
 ```
 
-You should see something like: `Python 3.12.10`
-
 **2. Git**
 
-- Visit: [https://git-scm.com/download/win](https://git-scm.com/download/win) (for Windows)
-- Or: [https://git-scm.com/](https://git-scm.com/) (for other systems)
-- Download and install with default settings
+- Download and install Git with default settings
 - Restart your computer after installation
 
 **Verify installation:**
 ```bash
 git --version
 ```
-
-You should see something like: `git version 2.42.0`
 
 #### Installation Steps
 
@@ -165,18 +158,17 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 uvicorn app.main:app --reload
 ```
 
-The API will be available at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+The API will be available at: **http://127.0.0.1:8000/docs**
 
 ---
 
 ## 📚 API Documentation
 
-Once the application is running, access the interactive documentation:
+Once the application is running, access the interactive documentation at:
 
-- **Swagger UI** (Interactive API Explorer): [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **ReDoc** (Alternative Documentation): [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+**http://127.0.0.1:8000/docs**
 
-You can test all endpoints directly in Swagger UI!
+You can test all endpoints directly in this interface!
 
 ---
 
@@ -276,39 +268,6 @@ python -c "import secrets; print(secrets.token_urlsafe(32))"
 
 ## 🐛 Troubleshooting
 
-### Problem: "Python not found" (even after running the script)
-
-**Solution:**
-
-- The script will try to download and install Python automatically
-- If it fails, install Python manually from [https://www.python.org/downloads/](https://www.python.org/downloads/)
-- Make sure to check "Add Python to PATH" during installation
-- Restart your computer after installation
-
-### Problem: "Git not found" (even after running the script)
-
-**Solution:**
-
-- The script will try to download and install Git automatically
-- If it fails, install Git manually from [https://git-scm.com/download/win](https://git-scm.com/download/win)
-- Restart your computer after installation
-
-### Problem: "Permission denied" (PowerShell on Windows)
-
-**Solution:**
-
-```bash
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-### Problem: Port 8000 already in use
-
-**Solution:**
-
-```bash
-uvicorn app.main:app --reload --port 8001
-```
-
 ### Problem: COMECE_AQUI.bat doesn't work
 
 **Solution:**
@@ -318,13 +277,15 @@ uvicorn app.main:app --reload --port 8001
 3. Try running the script again
 4. If it still doesn't work, use the manual setup (Step 2 above)
 
-### Problem: Internet connection issues during installation
+### Problem: Port 8000 already in use
 
 **Solution:**
 
-- The script needs internet to download Python and Git
-- Make sure you have a stable internet connection
-- Try running the script again
+```bash
+uvicorn app.main:app --reload --port 8001
+```
+
+Then access the API at: **http://127.0.0.1:8001/docs**
 
 ---
 
@@ -359,8 +320,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 👨‍💻 Author
 
 Developed by **Lucas André S** with best practices in Python software development.
-
-For questions or issues, please open an issue on GitHub.
 
 ---
 
