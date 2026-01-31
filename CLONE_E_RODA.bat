@@ -5,7 +5,7 @@ color 0A
 
 echo.
 echo ========================================
-echo FastAPI - COMECE AQUI
+echo FastAPI - CLONE E RODA
 echo ========================================
 echo.
 
@@ -13,86 +13,37 @@ REM Obter Desktop
 for /f "tokens=3" %%A in ('reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v Desktop 2^>nul') do set "DESKTOP=%%A"
 if "!DESKTOP!"=="" set "DESKTOP=%USERPROFILE%\Desktop"
 
-echo Procurando arquivo ZIP...
-
-REM Procurar ZIP no Desktop
-for /f "delims=" %%F in ('dir /b "!DESKTOP!\*fastapi*.zip" 2^>nul') do (
-    set "ZIP_FILE=!DESKTOP!\%%F"
-    goto found_zip
-)
-
-REM Procurar ZIP no Downloads
-set "DOWNLOADS=%USERPROFILE%\Downloads"
-for /f "delims=" %%F in ('dir /b "!DOWNLOADS!\*fastapi*.zip" 2^>nul') do (
-    set "ZIP_FILE=!DOWNLOADS!\%%F"
-    goto found_zip
-)
-
-echo Nao encontrei o arquivo ZIP!
-pause
-exit /b 1
-
-:found_zip
-echo Encontrado: !ZIP_FILE!
-echo.
-
-REM Caminho de extração
-set "EXTRACT_PATH=!DESKTOP!\01-fastapi-rest-api"
+REM Caminho do projeto
+set "PROJECT_PATH=!DESKTOP!\01-fastapi-rest-api"
 set "COUNTER=1"
 
 :check_exists
-if exist "!EXTRACT_PATH!" (
-    set "EXTRACT_PATH=!DESKTOP!\01-fastapi-rest-api (!COUNTER!)"
+if exist "!PROJECT_PATH!" (
+    set "PROJECT_PATH=!DESKTOP!\01-fastapi-rest-api (!COUNTER!)"
     set /a COUNTER=!COUNTER!+1
     goto check_exists
 )
 
-echo Extraindo para: !EXTRACT_PATH!
+echo Clonando do GitHub...
+echo Destino: !PROJECT_PATH!
 echo.
 
-REM Criar pasta
-mkdir "!EXTRACT_PATH!" 2>nul
+REM Clonar do GitHub
+git clone https://github.com/lucasandre16112000-png/01-fastapi-rest-api.git "!PROJECT_PATH!"
 
-REM Criar script VBS para extrair ZIP
-set "VBS_FILE=%TEMP%\extract_zip.vbs"
-
-(
-    echo Set objArgs = WScript.Arguments
-    echo InputFile = objArgs^(0^)
-    echo OutputFolder = objArgs^(1^)
-    echo Set objShell = CreateObject^("Shell.Application"^)
-    echo Set objSource = objShell.NameSpace^(InputFile^).Items^(^)
-    echo Set objTarget = objShell.NameSpace^(OutputFolder^)
-    echo objTarget.CopyHere objSource, 256
-    echo WScript.Quit
-) > "!VBS_FILE!"
-
-REM Executar VBS para extrair
-echo Extraindo arquivos...
-cscript.exe //nologo "!VBS_FILE!" "!ZIP_FILE!" "!EXTRACT_PATH!" >nul 2>&1
-
-REM Deletar VBS
-del "!VBS_FILE!" 2>nul
-
-REM Aguardar extração
-timeout /t 3 /nobreak >nul
-
-REM Verificar se foi extraído
-if not exist "!EXTRACT_PATH!\COMECE_AQUI.bat" (
-    REM Pode estar em uma subpasta
-    if exist "!EXTRACT_PATH!\01-fastapi-rest-api-main\COMECE_AQUI.bat" (
-        cd /d "!EXTRACT_PATH!\01-fastapi-rest-api-main"
-    ) else (
-        echo ERRO: Falha ao extrair!
-        pause
-        exit /b 1
-    )
-) else (
-    cd /d "!EXTRACT_PATH!"
+if errorlevel 1 (
+    echo ERRO ao clonar do GitHub!
+    echo Certifique-se de que tem Git instalado.
+    echo Baixe em: https://git-scm.com/download/win
+    pause
+    exit /b 1
 )
 
-echo Extracao concluida!
+echo Clone concluido!
 echo.
+
+REM Mudar para o diretório
+cd /d "!PROJECT_PATH!"
 
 REM Agora executar o fluxo normal
 echo Iniciando configuracao...
