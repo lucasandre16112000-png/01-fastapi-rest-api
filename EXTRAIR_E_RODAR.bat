@@ -8,6 +8,7 @@ if "!DESKTOP!"=="" set "DESKTOP=%USERPROFILE%\Desktop"
 REM Caminho de extração
 set "EXTRACT_PATH=!DESKTOP!\01-fastapi-rest-api"
 set "COUNTER=1"
+
 :check_exists
 if exist "!EXTRACT_PATH!" (
     set "EXTRACT_PATH=!DESKTOP!\01-fastapi-rest-api (!COUNTER!)"
@@ -22,17 +23,14 @@ echo.
 REM Criar pasta
 mkdir "!EXTRACT_PATH!" 2>nul
 
-REM Copiar arquivos com robocopy (mais confiável)
-robocopy "%~dp0" "!EXTRACT_PATH!" /E /NFL /NDL /NJH /NJS /nc /ns /np 2>nul
+REM Copiar arquivos com xcopy (simples e confiável)
+echo Copiando arquivos...
+xcopy "%~dp0*.*" "!EXTRACT_PATH!\" /E /I /Y >nul 2>&1
 
-REM Se robocopy não funcionar, tentar xcopy
-if errorlevel 1 (
-    xcopy "%~dp0*.*" "!EXTRACT_PATH!\" /E /I /Y >nul 2>&1
+REM Copiar pasta app especificamente
+if exist "%~dp0app" (
+    xcopy "%~dp0app" "!EXTRACT_PATH!\app\" /E /I /Y >nul 2>&1
 )
-
-REM Copiar pastas importantes
-if exist "%~dp0app" robocopy "%~dp0app" "!EXTRACT_PATH!\app" /E /NFL /NDL /NJH /NJS /nc /ns /np 2>nul
-if exist "%~dp0app" xcopy "%~dp0app" "!EXTRACT_PATH!\app\" /E /I /Y >nul 2>&1
 
 REM Limpar venv e .git
 if exist "!EXTRACT_PATH!\venv" rmdir /s /q "!EXTRACT_PATH!\venv" 2>nul
