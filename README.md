@@ -29,48 +29,15 @@ This API is a complete example of how to build a modern, secure, and scalable we
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### What You Need to Know
 
-Before starting, you need to install the following software on your computer:
+**The good news:** You don't need to install anything manually! The `COMECE_AQUI.bat` script will automatically download and install everything your computer needs.
 
-#### 1. **Python 3.9 or Higher**
-
-Python is the programming language required to run this project.
-
-**How to install:**
-
-- Visit: [https://www.python.org/downloads/](https://www.python.org/downloads/)
-- Download Python 3.9 or higher (recommended: Python 3.10 or 3.11)
-- **IMPORTANT**: During installation, check the box **"Add Python to PATH"**
-- Click "Install Now"
-- After installation, restart your computer
-
-**Verify installation:**
-
-```bash
-python --version
-```
-
-You should see something like: `Python 3.12.10`
-
-#### 2. **Git (for cloning the repository)**
-
-Git is used to download the project from GitHub.
-
-**How to install:**
-
-- Visit: [https://git-scm.com/download/win](https://git-scm.com/download/win) (for Windows)
-- Or: [https://git-scm.com/](https://git-scm.com/) (for other systems)
-- Download and install with default settings
-- Restart your computer after installation
-
-**Verify installation:**
-
-```bash
-git --version
-```
-
-You should see something like: `git version 2.42.0`
+**What gets installed automatically:**
+- ✅ **Python 3.11** (if not already installed)
+- ✅ **Git** (if not already installed)
+- ✅ **Virtual Environment** (venv)
+- ✅ **All project dependencies** (FastAPI, SQLAlchemy, etc.)
 
 ---
 
@@ -80,19 +47,24 @@ You should see something like: `git version 2.42.0`
 
 **For Windows Users (Easiest Method):**
 
-1. Download this file: **`COMECE_AQUI.bat`** from the GitHub repository
-2. **Double-click** on `COMECE_AQUI.bat`
-3. Wait for the process to complete
-4. Your browser will automatically open with the API documentation
+1. Download the ZIP file from GitHub: [https://github.com/lucasandre16112000-png/01-fastapi-rest-api](https://github.com/lucasandre16112000-png/01-fastapi-rest-api)
+2. Extract the ZIP file to your Desktop or Documents folder
+3. Inside the extracted folder, find **`COMECE_AQUI.bat`**
+4. **Double-click** on `COMECE_AQUI.bat`
+5. Wait for the process to complete (it may take a few minutes on first run)
+6. Your browser will automatically open with the API documentation
 
-The script will automatically:
+**The script will automatically:**
 
-- Detect if you're running from a ZIP file
-- Extract the project to your Desktop
-- Create a virtual environment
-- Install all dependencies
-- Start the API
-- Open the documentation in your browser
+- ✅ Detect if Python is installed
+- ✅ If Python is missing, download and install Python 3.11 automatically
+- ✅ Detect if Git is installed
+- ✅ If Git is missing, download and install Git automatically
+- ✅ Extract the project to your Desktop
+- ✅ Create a virtual environment
+- ✅ Install all dependencies
+- ✅ Start the API server
+- ✅ Open the documentation in your browser
 
 **That's it!** The API is now running! 🎉
 
@@ -101,6 +73,41 @@ The script will automatically:
 ### Step 2: Manual Setup (If you prefer to do it manually)
 
 If you prefer to do it manually or the script doesn't work, follow these steps:
+
+#### Prerequisites
+
+You need to install these programs manually:
+
+**1. Python 3.9 or Higher**
+
+- Visit: [https://www.python.org/downloads/](https://www.python.org/downloads/)
+- Download Python 3.9 or higher (recommended: Python 3.10 or 3.11)
+- **IMPORTANT**: During installation, check the box **"Add Python to PATH"**
+- Click "Install Now"
+- After installation, restart your computer
+
+**Verify installation:**
+```bash
+python --version
+```
+
+You should see something like: `Python 3.12.10`
+
+**2. Git**
+
+- Visit: [https://git-scm.com/download/win](https://git-scm.com/download/win) (for Windows)
+- Or: [https://git-scm.com/](https://git-scm.com/) (for other systems)
+- Download and install with default settings
+- Restart your computer after installation
+
+**Verify installation:**
+```bash
+git --version
+```
+
+You should see something like: `git version 2.42.0`
+
+#### Installation Steps
 
 #### 2.1 Clone the Repository
 
@@ -220,7 +227,7 @@ Expected output: **9 tests passed** ✓
 ├── .env                       # Environment variables (create from .env.example)
 ├── .env.example               # Example environment variables
 ├── requirements.txt           # Project dependencies
-├── COMECE_AQUI.bat           # Automatic setup script for Windows (MAIN)
+├── COMECE_AQUI.bat           # Automatic setup script (DOWNLOADS EVERYTHING AUTOMATICALLY)
 ├── README.md                  # This file
 └── api_tester.html           # Web-based API tester
 ```
@@ -269,20 +276,22 @@ python -c "import secrets; print(secrets.token_urlsafe(32))"
 
 ## 🐛 Troubleshooting
 
-### Problem: "Python not found"
+### Problem: "Python not found" (even after running the script)
 
 **Solution:**
 
-- Install Python from [https://www.python.org/downloads/](https://www.python.org/downloads/)
+- The script will try to download and install Python automatically
+- If it fails, install Python manually from [https://www.python.org/downloads/](https://www.python.org/downloads/)
 - Make sure to check "Add Python to PATH" during installation
-- Restart your computer
+- Restart your computer after installation
 
-### Problem: "Git not found"
+### Problem: "Git not found" (even after running the script)
 
 **Solution:**
 
-- Install Git from [https://git-scm.com/download/win](https://git-scm.com/download/win)
-- Restart your computer
+- The script will try to download and install Git automatically
+- If it fails, install Git manually from [https://git-scm.com/download/win](https://git-scm.com/download/win)
+- Restart your computer after installation
 
 ### Problem: "Permission denied" (PowerShell on Windows)
 
@@ -304,16 +313,24 @@ uvicorn app.main:app --reload --port 8001
 
 **Solution:**
 
-- Make sure you have Python and Git installed
-- Restart your computer after installing them
+1. Make sure you extracted the ZIP file to a permanent location (Desktop, Documents, etc.)
+2. Don't run the script from inside the ZIP file
+3. Try running the script again
+4. If it still doesn't work, use the manual setup (Step 2 above)
+
+### Problem: Internet connection issues during installation
+
+**Solution:**
+
+- The script needs internet to download Python and Git
+- Make sure you have a stable internet connection
 - Try running the script again
-- If it still doesn't work, use the manual setup (Step 2 above)
 
 ---
 
 ## 📦 Dependencies
 
-All dependencies are listed in `requirements.txt`:
+All dependencies are automatically installed by the script. Here's what gets installed:
 
 - **FastAPI** - Web framework
 - **Uvicorn** - ASGI server
@@ -322,6 +339,8 @@ All dependencies are listed in `requirements.txt`:
 - **python-jose** - JWT token handling
 - **passlib** - Password hashing
 - **pytest** - Testing framework
+
+See `requirements.txt` for the complete list.
 
 ---
 
@@ -346,3 +365,5 @@ For questions or issues, please open an issue on GitHub.
 ---
 
 **Last Updated**: January 31, 2026
+
+**Note**: The `COMECE_AQUI.bat` script automatically downloads and installs Python and Git if they are not already on your computer. This means your clients don't need to install anything manually - they just need to run the script!

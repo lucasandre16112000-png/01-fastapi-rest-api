@@ -98,20 +98,109 @@ REM Agora executar o fluxo normal
 echo Iniciando configuracao...
 echo.
 
-REM Verificar Python
-echo [1/5] Verificando Python...
+REM ========================================
+REM VERIFICAR E INSTALAR PYTHON
+REM ========================================
+echo [1/6] Verificando Python...
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo ERRO: Python nao encontrado!
-    echo Instale em: https://www.python.org/downloads/
-    pause
-    exit /b 1
+    echo.
+    echo AVISO: Python nao encontrado!
+    echo.
+    echo Baixando Python 3.11...
+    echo.
+    
+    REM Baixar Python
+    set "PYTHON_INSTALLER=%TEMP%\python-installer.exe"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "^
+    try {^
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; ^
+        Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.11.0/python-3.11.0-amd64.exe' -OutFile '!PYTHON_INSTALLER!' -ErrorAction Stop; ^
+        Write-Host 'Download concluido'; ^
+        exit 0; ^
+    } catch {^
+        Write-Host 'Erro ao baixar Python'; ^
+        exit 1; ^
+    }^
+    " >nul 2>&1
+    
+    if exist "!PYTHON_INSTALLER!" (
+        echo Instalando Python...
+        "!PYTHON_INSTALLER!" /quiet InstallAllUsers=1 PrependPath=1 >nul 2>&1
+        timeout /t 5 /nobreak >nul
+        del "!PYTHON_INSTALLER!" 2>nul
+        
+        REM Verificar se Python foi instalado
+        python --version >nul 2>&1
+        if errorlevel 1 (
+            echo ERRO: Falha ao instalar Python!
+            echo Instale manualmente em: https://www.python.org/downloads/
+            pause
+            exit /b 1
+        )
+    ) else (
+        echo ERRO: Falha ao baixar Python!
+        echo Instale manualmente em: https://www.python.org/downloads/
+        pause
+        exit /b 1
+    )
 )
 echo [OK] Python encontrado
 echo.
 
-REM Criar venv
-echo [2/5] Criando ambiente virtual...
+REM ========================================
+REM VERIFICAR E INSTALAR GIT
+REM ========================================
+echo [2/6] Verificando Git...
+git --version >nul 2>&1
+if errorlevel 1 (
+    echo.
+    echo AVISO: Git nao encontrado!
+    echo.
+    echo Baixando Git...
+    echo.
+    
+    REM Baixar Git
+    set "GIT_INSTALLER=%TEMP%\git-installer.exe"
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "^
+    try {^
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; ^
+        Invoke-WebRequest -Uri 'https://github.com/git-for-windows/git/releases/download/v2.42.0.windows.1/Git-2.42.0-64-bit.exe' -OutFile '!GIT_INSTALLER!' -ErrorAction Stop; ^
+        Write-Host 'Download concluido'; ^
+        exit 0; ^
+    } catch {^
+        Write-Host 'Erro ao baixar Git'; ^
+        exit 1; ^
+    }^
+    " >nul 2>&1
+    
+    if exist "!GIT_INSTALLER!" (
+        echo Instalando Git...
+        "!GIT_INSTALLER!" /SILENT /NORESTART >nul 2>&1
+        timeout /t 5 /nobreak >nul
+        del "!GIT_INSTALLER!" 2>nul
+        
+        REM Atualizar PATH
+        setx PATH "%PATH%;C:\Program Files\Git\cmd" >nul 2>&1
+        
+        REM Verificar se Git foi instalado
+        git --version >nul 2>&1
+        if errorlevel 1 (
+            echo AVISO: Git pode nao estar disponivel ainda.
+            echo Reinicie o computador e tente novamente.
+        )
+    ) else (
+        echo AVISO: Falha ao baixar Git automaticamente.
+        echo Instale manualmente em: https://git-scm.com/download/win
+    )
+)
+echo [OK] Git verificado
+echo.
+
+REM ========================================
+REM CRIAR VENV
+REM ========================================
+echo [3/6] Criando ambiente virtual...
 if not exist "venv" (
     python -m venv venv
     if errorlevel 1 (
@@ -123,8 +212,10 @@ if not exist "venv" (
 echo [OK] venv criado
 echo.
 
-REM Ativar venv
-echo [3/5] Ativando ambiente virtual...
+REM ========================================
+REM ATIVAR VENV
+REM ========================================
+echo [4/6] Ativando ambiente virtual...
 call venv\Scripts\activate.bat
 if errorlevel 1 (
     echo ERRO ao ativar venv!
@@ -134,8 +225,10 @@ if errorlevel 1 (
 echo [OK] venv ativado
 echo.
 
-REM Instalar dependências
-echo [4/5] Instalando dependencias...
+REM ========================================
+REM INSTALAR DEPENDÊNCIAS
+REM ========================================
+echo [5/6] Instalando dependencias...
 pip install -q -r requirements.txt
 if errorlevel 1 (
     echo ERRO ao instalar dependencias!
@@ -145,8 +238,10 @@ if errorlevel 1 (
 echo [OK] Dependencias instaladas
 echo.
 
-REM Criar .env
-echo [5/5] Preparando configuracoes...
+REM ========================================
+REM PREPARAR CONFIGURAÇÕES
+REM ========================================
+echo [6/6] Preparando configuracoes...
 if not exist ".env" (
     copy .env.example .env >nul
 )
