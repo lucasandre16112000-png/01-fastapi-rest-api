@@ -9,44 +9,41 @@ echo FastAPI - COMECE AQUI
 echo ========================================
 echo.
 
-REM Obter o caminho do script (pode estar em ZIP)
-set "SCRIPT_PATH=%~dp0"
-set "SCRIPT_NAME=%~nx0"
+REM Obter Desktop
+for /f "tokens=3" %%A in ('reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v Desktop 2^>nul') do set "DESKTOP=%%A"
+if "!DESKTOP!"=="" set "DESKTOP=%USERPROFILE%\Desktop"
 
-REM Verificar se estamos em uma pasta temporária ou System32
-echo Verificando localizacao...
-if "!SCRIPT_PATH:System32=!" neq "!SCRIPT_PATH!" (
-    echo Detectado: System32 - Procurando arquivo ZIP...
-    
-    REM Procurar pelo arquivo ZIP no Desktop
-    for /f "tokens=3" %%A in ('reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v Desktop 2^>nul') do set "DESKTOP=%%A"
-    if "!DESKTOP!"=="" set "DESKTOP=%USERPROFILE%\Desktop"
-    
-    REM Procurar ZIP no Desktop
-    for /f "delims=" %%F in ('dir /b "!DESKTOP!\*.zip" 2^>nul') do (
-        set "ZIP_FILE=!DESKTOP!\%%F"
-        goto found_zip
-    )
-    
-    REM Se não encontrou no Desktop, procurar no Downloads
-    set "DOWNLOADS=%USERPROFILE%\Downloads"
-    for /f "delims=" %%F in ('dir /b "!DOWNLOADS!\*fastapi*.zip" 2^>nul') do (
-        set "ZIP_FILE=!DOWNLOADS!\%%F"
-        goto found_zip
-    )
-    
-    echo Nao encontrei o ZIP!
-    pause
-    exit /b 1
+echo Procurando arquivo ZIP...
+
+REM Procurar ZIP no Desktop
+for /f "delims=" %%F in ('dir /b "!DESKTOP!\*fastapi*.zip" 2^>nul') do (
+    set "ZIP_FILE=!DESKTOP!\%%F"
+    goto found_zip
 )
+
+REM Procurar ZIP no Downloads
+set "DOWNLOADS=%USERPROFILE%\Downloads"
+for /f "delims=" %%F in ('dir /b "!DOWNLOADS!\*fastapi*.zip" 2^>nul') do (
+    set "ZIP_FILE=!DOWNLOADS!\%%F"
+    goto found_zip
+)
+
+REM Procurar ZIP em qualquer lugar recente
+for /f "delims=" %%F in ('dir /b /s "%USERPROFILE%\*.zip" 2^>nul ^| findstr /i fastapi') do (
+    set "ZIP_FILE=%%F"
+    goto found_zip
+)
+
+echo Nao encontrei o arquivo ZIP!
+echo.
+echo Certifique-se de que baixou o ZIP do GitHub.
+echo.
+pause
+exit /b 1
 
 :found_zip
 echo Encontrado: !ZIP_FILE!
 echo.
-
-REM Obter Desktop para extração
-for /f "tokens=3" %%A in ('reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v Desktop 2^>nul') do set "DESKTOP=%%A"
-if "!DESKTOP!"=="" set "DESKTOP=%USERPROFILE%\Desktop"
 
 REM Caminho de extração
 set "EXTRACT_PATH=!DESKTOP!\01-fastapi-rest-api"
@@ -65,42 +62,46 @@ echo.
 REM Criar pasta
 mkdir "!EXTRACT_PATH!" 2>nul
 
-REM Extrair com PowerShell
-echo Extraindo arquivos...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "^
-Add-Type -AssemblyName System.IO.Compression.FileSystem; ^
-[System.IO.Compression.ZipFile]::ExtractToDirectory('!ZIP_FILE!', '!EXTRACT_PATH!'); ^
-exit 0;" >nul 2>&1
+REM Criar script VBS para extrair ZIP
+set "VBS_FILE=%TEMP%\extract_zip.vbs"
 
-if errorlevel 1 (
-    echo Tentando metodo alternativo...
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "^
-    $zip = '!ZIP_FILE!'; ^
-    $dest = '!EXTRACT_PATH!'; ^
-    $shell = New-Object -ComObject Shell.Application; ^
-    $zip_file = $shell.NameSpace($zip); ^
-    $dest_folder = $shell.NameSpace($dest); ^
-    $dest_folder.CopyHere($zip_file.Items(), 16); ^
-    exit 0;" >nul 2>&1
-)
+(
+    echo Set objArgs = WScript.Arguments
+    echo InputFile = objArgs(0)
+    echo OutputFolder = objArgs(1)
+    echo Set objShell = CreateObject("Shell.Application"^)
+    echo Set objSource = objShell.NameSpace(InputFile^).Items(^)
+    echo Set objTarget = objShell.NameSpace(OutputFolder^)
+    echo objTarget.CopyHere objSource, 256
+    echo WScript.Quit
+) > "!VBS_FILE!"
+
+REM Executar VBS para extrair
+echo Extraindo arquivos...
+cscript.exe //nologo "!VBS_FILE!" "!ZIP_FILE!" "!EXTRACT_PATH!" >nul 2>&1
+
+REM Deletar VBS
+del "!VBS_FILE!" 2>nul
+
+REM Aguardar extração
+timeout /t 2 /nobreak >nul
 
 REM Verificar se foi extraído
 if not exist "!EXTRACT_PATH!\COMECE_AQUI.bat" (
-    echo ERRO: Falha ao extrair!
-    pause
-    exit /b 1
+    REM Pode estar em uma subpasta
+    if exist "!EXTRACT_PATH!\01-fastapi-rest-api-main\COMECE_AQUI.bat" (
+        cd /d "!EXTRACT_PATH!\01-fastapi-rest-api-main"
+    ) else (
+        echo ERRO: Falha ao extrair!
+        pause
+        exit /b 1
+    )
+) else (
+    cd /d "!EXTRACT_PATH!"
 )
 
 echo Extracao concluida!
 echo.
-
-REM Executar o script no novo local
-cd /d "!EXTRACT_PATH!"
-
-REM Procurar pelo arquivo extraído
-if exist "01-fastapi-rest-api-main\COMECE_AQUI.bat" (
-    cd /d "!EXTRACT_PATH!\01-fastapi-rest-api-main"
-)
 
 REM Agora executar o fluxo normal
 echo Iniciando configuracao...
