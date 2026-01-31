@@ -1,161 +1,65 @@
 ================================================================================
-                    FASTAPI - GUIA DE INSTALACAO RAPIDA
+                    FASTAPI - COMECE AQUI!
 ================================================================================
 
-IMPORTANTE: Siga estes passos EXATAMENTE como descrito!
+⭐ CLIQUE DUAS VEZES NESTE ARQUIVO:
+
+    COMECE_AQUI.bat
+
+Pronto! Tudo funciona automaticamente! 🚀
 
 ================================================================================
-METODO 1: AUTOMATICO (RECOMENDADO - MAIS FACIL!)
+O QUE ACONTECERÁ
 ================================================================================
 
-Se você baixou um arquivo ZIP, NESTE ARQUIVO MESMO:
-
-1. Procure por um destes arquivos:
-   - EXTRAIR_E_RODAR.bat (Windows - Recomendado)
-   - EXTRAIR_E_RODAR.ps1 (Windows - PowerShell)
-   - EXTRAIR_E_RODAR.vbs (Windows - VBS)
-
-2. CLIQUE DUAS VEZES no arquivo escolhido
-
-3. O script irá:
-   ✓ Extrair tudo automaticamente para o Desktop ou Documents
-   ✓ Copiar todos os arquivos para o local correto
-   ✓ Criar o ambiente virtual
-   ✓ Instalar as dependências
-   ✓ Iniciar a API
-   ✓ Abrir o navegador automaticamente
-
-4. Pronto! A API está rodando!
+1. O script verificará se você está executando do ZIP
+2. Se estiver, ele extrai automaticamente para o Desktop
+3. Cria o ambiente virtual
+4. Instala as dependências
+5. Inicia a API
+6. Abre o navegador automaticamente
 
 ================================================================================
-METODO 2: MANUAL (Se o Método 1 não funcionar)
+SE COMECE_AQUI.bat NÃO FUNCIONAR
 ================================================================================
 
-1. Extraia o ZIP manualmente:
-   - Clique com botão direito no ZIP
-   - Selecione "Extrair tudo..."
-   - Escolha um local permanente (Desktop, Documents, etc)
-   - Aguarde a extração completar
+Siga estes passos SIMPLES:
 
-2. Abra a pasta extraída
+1. Clique direito no arquivo ZIP
+2. Selecione "Extrair tudo..."
+3. Escolha um local permanente (Desktop, Documents, etc)
+4. Clique em "Extrair"
+5. Abra a pasta extraída
+6. Clique DUAS VEZES em COMECE_AQUI.bat
 
-3. Dentro da pasta, clique DUAS VEZES em:
-   - INICIAR.bat (Recomendado)
-   OU
-   - setup.bat (depois run.bat)
-
-4. Aguarde a instalação e o navegador abrirá automaticamente
+Pronto! 🎉
 
 ================================================================================
-METODO 3: LINHA DE COMANDO (Para usuários avançados)
+APÓS INICIAR
 ================================================================================
 
-1. Extraia o ZIP
-
-2. Abra o Prompt de Comando (cmd) ou PowerShell
-
-3. Navegue até a pasta extraída:
-   cd C:\Caminho\Para\01-fastapi-rest-api
-
-4. Execute:
-   python -m venv venv
-   venv\Scripts\activate.bat
-   pip install -r requirements.txt
-   uvicorn app.main:app --reload
-
-5. Abra o navegador em: http://127.0.0.1:8000/docs
-
-================================================================================
-PROBLEMAS E SOLUCOES
-================================================================================
-
-PROBLEMA: "requirements.txt not found"
-SOLUÇÃO: 
-   1. Use METODO 1 (EXTRAIR_E_RODAR.bat)
-   2. Isso extrai tudo automaticamente para o local correto
-   3. Não execute diretamente do ZIP
-
-PROBLEMA: "Python not found"
-SOLUÇÃO: 
-   1. Instale Python 3.9+ em https://www.python.org/downloads/
-   2. Marque a opção "Add Python to PATH" durante a instalação
-   3. Reinicie o computador após a instalação
-   4. Tente novamente
-
-PROBLEMA: "Access denied" ao criar venv
-SOLUÇÃO: 
-   1. Execute como Administrador
-   2. Clique direito no arquivo > Executar como administrador
-   3. Tente novamente
-
-PROBLEMA: PowerShell não executa scripts
-SOLUÇÃO: 
-   1. Execute este comando no PowerShell como Administrador:
-      Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-   2. Digite "S" (Sim) quando perguntado
-   3. Tente novamente
-
-PROBLEMA: "Falha ao instalar dependências"
-SOLUÇÃO:
-   1. Verifique sua conexão com a internet
-   2. Tente novamente
-   3. Se persistir, delete a pasta 'venv' e tente novamente
-
-PROBLEMA: Nenhum dos métodos funciona
-SOLUÇÃO:
-   1. Execute DIAGNOSTICO.bat para identificar o problema específico
-   2. Leia as mensagens de erro com atenção
-   3. Siga as soluções sugeridas
-   4. Se ainda não funcionar, entre em contato com suporte
-
-================================================================================
-USANDO O DIAGNOSTICO
-================================================================================
-
-Se algo não funcionar, execute:
-   DIAGNOSTICO.bat
-
-Este script irá:
-   ✓ Verificar se Python está instalado
-   ✓ Verificar se pip está disponível
-   ✓ Verificar se todos os arquivos necessários existem
-   ✓ Verificar permissões de leitura/escrita
-   ✓ Verificar conexão com internet
-   ✓ Gerar um relatório com possíveis soluções
-
-O relatório será salvo em: %TEMP%\fastapi_diagnostico.log
-
-================================================================================
-APOS INICIAR A API
-================================================================================
-
-Você verá no terminal:
-   API rodando em: http://127.0.0.1:8000
-   Documentacao: http://127.0.0.1:8000/docs
+Você verá:
+   API: http://127.0.0.1:8000
+   Docs: http://127.0.0.1:8000/docs
 
 O navegador abrirá automaticamente com a documentação interativa (Swagger).
-Você pode testar todos os endpoints diretamente lá!
 
 Para parar a API:
-   Pressione CTRL+C no terminal
+   Pressione CTRL+C
 
 ================================================================================
-ARQUIVOS IMPORTANTES
+PROBLEMAS?
 ================================================================================
 
-EXTRAIR_E_RODAR.bat  - Script principal (clique para começar)
-INICIAR.bat          - Script simples (se já extraído)
-DIAGNOSTICO.bat      - Script de diagnóstico (se algo não funcionar)
-LEIA-ME-PRIMEIRO.txt - Este arquivo
-README.md            - Documentação completa
-INSTRUCOES.md        - Instruções detalhadas
+Se algo não funcionar:
 
-================================================================================
-MAIS INFORMACOES
-================================================================================
+1. Instale Python 3.9+ em: https://www.python.org/downloads/
+   Marque "Add Python to PATH"
 
-Documentação completa: README.md
-Instruções detalhadas: INSTRUCOES.md
-Repositório GitHub: https://github.com/lucasandre16112000-png/01-fastapi-rest-api
+2. Reinicie o computador
+
+3. Tente novamente
+
+4. Se ainda não funcionar, clique em DIAGNOSTICO.bat
 
 ================================================================================
