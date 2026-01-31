@@ -1,5 +1,5 @@
 # /app/schemas.py
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Optional
 from datetime import datetime
 
@@ -25,8 +25,7 @@ class Task(TaskBase):
     created_at: datetime
     updated_at: Optional[datetime] = None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # ============================================================================
 # SCHEMAS - USUÁRIOS
@@ -43,8 +42,7 @@ class User(UserBase):
     is_active: bool
     tasks: List[Task] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # ============================================================================
 # SCHEMAS - TOKEN

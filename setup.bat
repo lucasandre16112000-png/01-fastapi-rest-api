@@ -2,6 +2,8 @@
 REM Script de configuração inicial para Windows
 REM Este script cria o venv e instala as dependências
 
+setlocal enabledelayedexpansion
+
 echo ========================================
 echo FastAPI Task Manager - Setup Windows
 echo ========================================
@@ -34,12 +36,22 @@ echo.
 REM Ativar ambiente virtual
 echo [INFO] Ativando ambiente virtual...
 call venv\Scripts\activate.bat
+if errorlevel 1 (
+    echo [ERRO] Falha ao ativar ambiente virtual
+    pause
+    exit /b 1
+)
 echo [OK] Ambiente virtual ativado
 echo.
 
 REM Atualizar pip
 echo [INFO] Atualizando pip...
 python -m pip install --upgrade pip
+if errorlevel 1 (
+    echo [ERRO] Falha ao atualizar pip
+    pause
+    exit /b 1
+)
 echo [OK] pip atualizado
 echo.
 
@@ -57,7 +69,7 @@ echo.
 REM Criar arquivo .env se não existir
 if not exist ".env" (
     echo [INFO] Criando arquivo .env...
-    copy .env.example .env
+    copy .env.example .env > nul
     echo [OK] Arquivo .env criado. Por favor, atualize os valores conforme necessário.
 ) else (
     echo [OK] Arquivo .env já existe
