@@ -220,8 +220,7 @@ Expected output: **9 tests passed** ✓
 ├── .env.example               # Example environment variables
 ├── requirements.txt           # Project dependencies
 ├── COMECE_AQUI.bat           # Automatic setup script (DOWNLOADS EVERYTHING AUTOMATICALLY)
-├── README.md                  # This file
-└── api_tester.html           # Web-based API tester
+└── README.md                  # This file
 ```
 
 ---
