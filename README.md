@@ -38,6 +38,7 @@ Before starting, you need to install the following software on your computer:
 Python is the programming language required to run this project.
 
 **How to install:**
+
 - Visit: [https://www.python.org/downloads/](https://www.python.org/downloads/)
 - Download Python 3.9 or higher (recommended: Python 3.10 or 3.11)
 - **IMPORTANT**: During installation, check the box **"Add Python to PATH"**
@@ -45,6 +46,7 @@ Python is the programming language required to run this project.
 - After installation, restart your computer
 
 **Verify installation:**
+
 ```bash
 python --version
 ```
@@ -56,12 +58,14 @@ You should see something like: `Python 3.12.10`
 Git is used to download the project from GitHub.
 
 **How to install:**
+
 - Visit: [https://git-scm.com/download/win](https://git-scm.com/download/win) (for Windows)
 - Or: [https://git-scm.com/](https://git-scm.com/) (for other systems)
 - Download and install with default settings
 - Restart your computer after installation
 
 **Verify installation:**
+
 ```bash
 git --version
 ```
@@ -82,6 +86,7 @@ You should see something like: `git version 2.42.0`
 4. Your browser will automatically open with the API documentation
 
 The script will automatically:
+
 - Detect if you're running from a ZIP file
 - Extract the project to your Desktop
 - Create a virtual environment
@@ -107,18 +112,21 @@ cd 01-fastapi-rest-api
 #### 2.2 Create and Activate Virtual Environment
 
 **On Linux/macOS:**
+
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
 **On Windows (Command Prompt):**
+
 ```bash
 python -m venv venv
 venv\Scripts\activate.bat
 ```
 
 **On Windows (PowerShell):**
+
 ```bash
 python -m venv venv
 venv\Scripts\Activate.ps1
@@ -222,14 +230,17 @@ Expected output: **9 tests passed** ✓
 ## 🔧 API Endpoints
 
 ### Health Check
+
 - `GET /api/v1/health` - Check if API is running
 
 ### Users
+
 - `POST /api/v1/users/` - Create a new user
 - `POST /api/v1/token` - Login and get JWT token
 - `GET /api/v1/users/me` - Get current user info
 
 ### Tasks
+
 - `GET /api/v1/tasks/` - List all tasks
 - `POST /api/v1/tasks/` - Create a new task
 - `GET /api/v1/tasks/{task_id}` - Get task details
@@ -243,9 +254,10 @@ Expected output: **9 tests passed** ✓
 **Before deploying to production:**
 
 1. **Generate a strong SECRET_KEY:**
-   ```bash
-   python -c "import secrets; print(secrets.token_urlsafe(32))"
-   ```
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
 
 2. **Update the `.env` file** with the generated key
 
@@ -258,34 +270,44 @@ Expected output: **9 tests passed** ✓
 ## 🐛 Troubleshooting
 
 ### Problem: "Python not found"
+
 **Solution:**
+
 - Install Python from [https://www.python.org/downloads/](https://www.python.org/downloads/)
 - Make sure to check "Add Python to PATH" during installation
 - Restart your computer
 
 ### Problem: "Git not found"
+
 **Solution:**
+
 - Install Git from [https://git-scm.com/download/win](https://git-scm.com/download/win)
 - Restart your computer
 
 ### Problem: "Permission denied" (PowerShell on Windows)
+
 **Solution:**
+
 ```bash
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 ### Problem: Port 8000 already in use
+
 **Solution:**
+
 ```bash
 uvicorn app.main:app --reload --port 8001
 ```
 
 ### Problem: COMECE_AQUI.bat doesn't work
+
 **Solution:**
-1. Make sure you have Python and Git installed
-2. Restart your computer after installing them
-3. Try running the script again
-4. If it still doesn't work, use the manual setup (Step 2 above)
+
+- Make sure you have Python and Git installed
+- Restart your computer after installing them
+- Try running the script again
+- If it still doesn't work, use the manual setup (Step 2 above)
 
 ---
 
