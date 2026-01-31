@@ -66,28 +66,64 @@ METODO 3: LINHA DE COMANDO (Para usuários avançados)
 5. Abra o navegador em: http://127.0.0.1:8000/docs
 
 ================================================================================
-PROBLEMAS COMUNS
+PROBLEMAS E SOLUCOES
 ================================================================================
 
 PROBLEMA: "requirements.txt not found"
-SOLUÇÃO: Use o METODO 1 (EXTRAIR_E_RODAR.bat)
-         Isso extrai tudo automaticamente para o local correto
+SOLUÇÃO: 
+   1. Use METODO 1 (EXTRAIR_E_RODAR.bat)
+   2. Isso extrai tudo automaticamente para o local correto
+   3. Não execute diretamente do ZIP
 
 PROBLEMA: "Python not found"
-SOLUÇÃO: Instale Python 3.9+ em https://www.python.org/downloads/
-         Marque a opção "Add Python to PATH" durante a instalação
+SOLUÇÃO: 
+   1. Instale Python 3.9+ em https://www.python.org/downloads/
+   2. Marque a opção "Add Python to PATH" durante a instalação
+   3. Reinicie o computador após a instalação
+   4. Tente novamente
 
 PROBLEMA: "Access denied" ao criar venv
-SOLUÇÃO: Execute como Administrador
-         Clique direito no arquivo > Executar como administrador
+SOLUÇÃO: 
+   1. Execute como Administrador
+   2. Clique direito no arquivo > Executar como administrador
+   3. Tente novamente
 
 PROBLEMA: PowerShell não executa scripts
-SOLUÇÃO: Execute este comando no PowerShell como Administrador:
-         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+SOLUÇÃO: 
+   1. Execute este comando no PowerShell como Administrador:
+      Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+   2. Digite "S" (Sim) quando perguntado
+   3. Tente novamente
+
+PROBLEMA: "Falha ao instalar dependências"
+SOLUÇÃO:
+   1. Verifique sua conexão com a internet
+   2. Tente novamente
+   3. Se persistir, delete a pasta 'venv' e tente novamente
 
 PROBLEMA: Nenhum dos métodos funciona
-SOLUÇÃO: Tente o METODO 3 (Linha de comando)
-         Ou entre em contato com suporte
+SOLUÇÃO:
+   1. Execute DIAGNOSTICO.bat para identificar o problema específico
+   2. Leia as mensagens de erro com atenção
+   3. Siga as soluções sugeridas
+   4. Se ainda não funcionar, entre em contato com suporte
+
+================================================================================
+USANDO O DIAGNOSTICO
+================================================================================
+
+Se algo não funcionar, execute:
+   DIAGNOSTICO.bat
+
+Este script irá:
+   ✓ Verificar se Python está instalado
+   ✓ Verificar se pip está disponível
+   ✓ Verificar se todos os arquivos necessários existem
+   ✓ Verificar permissões de leitura/escrita
+   ✓ Verificar conexão com internet
+   ✓ Gerar um relatório com possíveis soluções
+
+O relatório será salvo em: %TEMP%\fastapi_diagnostico.log
 
 ================================================================================
 APOS INICIAR A API
@@ -102,6 +138,17 @@ Você pode testar todos os endpoints diretamente lá!
 
 Para parar a API:
    Pressione CTRL+C no terminal
+
+================================================================================
+ARQUIVOS IMPORTANTES
+================================================================================
+
+EXTRAIR_E_RODAR.bat  - Script principal (clique para começar)
+INICIAR.bat          - Script simples (se já extraído)
+DIAGNOSTICO.bat      - Script de diagnóstico (se algo não funcionar)
+LEIA-ME-PRIMEIRO.txt - Este arquivo
+README.md            - Documentação completa
+INSTRUCOES.md        - Instruções detalhadas
 
 ================================================================================
 MAIS INFORMACOES
