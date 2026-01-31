@@ -9,16 +9,19 @@ echo FastAPI - COMECE AQUI
 echo ========================================
 echo.
 
-REM Verificar se estamos em um ZIP temporário
+REM FORÇA mudar para o diretório do script
+cd /d "%~dp0"
+
+echo Diretorio: %cd%
+echo.
+
+REM Verificar se estamos em System32 ou Temp
 set "CURRENT_PATH=%cd%"
-if "!CURRENT_PATH:Temp=!" neq "!CURRENT_PATH!" (
+
+if "!CURRENT_PATH:System32=!" neq "!CURRENT_PATH!" (
+    echo ERRO: Voce esta executando do System32!
     echo.
-    echo ATENCAO IMPORTANTE!
-    echo.
-    echo Voce esta executando este arquivo DENTRO DO ZIP!
-    echo Localizacao atual: %cd%
-    echo.
-    echo Isso NAO vai funcionar porque os arquivos estao compactados.
+    echo Isso significa que voce clicou no arquivo DENTRO DO ZIP.
     echo.
     echo ========================================
     echo SOLUCAO:
@@ -30,7 +33,6 @@ if "!CURRENT_PATH:Temp=!" neq "!CURRENT_PATH!" (
     echo    - Desktop
     echo    - Documents
     echo    - C:\Projetos\
-    echo    - OU qualquer pasta fixa
     echo 4. Clique em "Extrair"
     echo 5. Aguarde completar
     echo 6. Abra a pasta extraida
@@ -42,7 +44,33 @@ if "!CURRENT_PATH:Temp=!" neq "!CURRENT_PATH!" (
     exit /b 1
 )
 
-REM Se chegou aqui, estamos em um local permanente
+if "!CURRENT_PATH:Temp=!" neq "!CURRENT_PATH!" (
+    echo ERRO: Voce esta executando de uma pasta TEMPORARIA!
+    echo.
+    echo Isso significa que voce clicou no arquivo DENTRO DO ZIP.
+    echo.
+    echo ========================================
+    echo SOLUCAO:
+    echo ========================================
+    echo.
+    echo 1. Clique com botao DIREITO no arquivo ZIP
+    echo 2. Selecione "Extrair tudo..."
+    echo 3. Escolha um local permanente:
+    echo    - Desktop
+    echo    - Documents
+    echo    - C:\Projetos\
+    echo 4. Clique em "Extrair"
+    echo 5. Aguarde completar
+    echo 6. Abra a pasta extraida
+    echo 7. Clique DUAS VEZES em COMECE_AQUI.bat
+    echo.
+    echo ========================================
+    echo.
+    pause
+    exit /b 1
+)
+
+REM Verificar arquivos
 echo Verificando arquivos necessarios...
 echo.
 
@@ -58,9 +86,6 @@ if not exist "requirements.txt" (
 
 if not exist "app\main.py" (
     echo ERRO: app\main.py nao encontrado!
-    echo Diretorio: %cd%
-    echo.
-    echo Certifique-se de que extraiu TODOS os arquivos do ZIP.
     echo.
     pause
     exit /b 1
@@ -68,7 +93,6 @@ if not exist "app\main.py" (
 
 if not exist ".env.example" (
     echo ERRO: .env.example nao encontrado!
-    echo Diretorio: %cd%
     echo.
     pause
     exit /b 1
