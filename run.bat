@@ -4,9 +4,15 @@ REM Este script ativa o ambiente virtual e inicia o servidor
 
 setlocal enabledelayedexpansion
 
+REM Obter o diretório do script
+set SCRIPT_DIR=%~dp0
+cd /d "%SCRIPT_DIR%"
+
 echo ========================================
 echo FastAPI Task Manager - Windows Launcher
 echo ========================================
+echo.
+echo Diretorio: %cd%
 echo.
 
 REM Verificar se Python está instalado
@@ -73,6 +79,16 @@ echo.
 echo API disponível em: http://127.0.0.1:8000
 echo Documentação (Swagger): http://127.0.0.1:8000/docs
 echo ReDoc: http://127.0.0.1:8000/redoc
+echo.
+echo Abrindo navegador em 3 segundos...
+echo.
+
+REM Aguardar 3 segundos antes de abrir o navegador
+timeout /t 3 /nobreak
+
+REM Abrir o navegador com a documentação
+start http://127.0.0.1:8000/docs
+
 echo.
 echo Pressione CTRL+C para parar o servidor
 echo ========================================

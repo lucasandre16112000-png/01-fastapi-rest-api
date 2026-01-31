@@ -4,9 +4,15 @@ REM Este script cria o venv e instala as dependências
 
 setlocal enabledelayedexpansion
 
+REM Obter o diretório do script
+set SCRIPT_DIR=%~dp0
+cd /d "%SCRIPT_DIR%"
+
 echo ========================================
 echo FastAPI Task Manager - Setup Windows
 echo ========================================
+echo.
+echo Diretorio: %cd%
 echo.
 
 REM Verificar se Python está instalado
@@ -27,6 +33,7 @@ echo [INFO] Criando ambiente virtual...
 python -m venv venv
 if errorlevel 1 (
     echo [ERRO] Falha ao criar ambiente virtual
+    echo Verifique se tem permissoes de escrita neste diretorio
     pause
     exit /b 1
 )
@@ -81,7 +88,7 @@ echo Setup concluido com sucesso!
 echo ========================================
 echo.
 echo Proximos passos:
-echo 1. Atualize o arquivo .env com suas configuracoes
+echo 1. Atualize o arquivo .env com suas configuracoes (se necessario)
 echo 2. Execute run.bat para iniciar a API
 echo.
 pause

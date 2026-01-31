@@ -3,9 +3,15 @@ REM Script para iniciar a API e o testador juntos no Windows
 
 setlocal enabledelayedexpansion
 
+REM Obter o diretório do script
+set SCRIPT_DIR=%~dp0
+cd /d "%SCRIPT_DIR%"
+
 echo ========================================
 echo FastAPI + API Tester - Windows Launcher
 echo ========================================
+echo.
+echo Diretorio: %cd%
 echo.
 
 REM Verificar se Python está instalado
@@ -72,13 +78,13 @@ echo.
 
 REM Abrir duas janelas de terminal
 REM Uma para a API
-start cmd /k "cd /d %cd% && venv\Scripts\activate.bat && echo. && echo ========================================= && echo API FastAPI rodando... && echo ========================================= && echo. && uvicorn app.main:app --reload --host 127.0.0.1 --port 8000"
+start "FastAPI Server" cmd /k "cd /d %cd% && venv\Scripts\activate.bat && echo. && echo ========================================= && echo API FastAPI rodando... && echo ========================================= && echo. && uvicorn app.main:app --reload --host 127.0.0.1 --port 8000"
 
 REM Aguardar a API iniciar
 timeout /t 3 /nobreak
 
 REM Outra para o testador
-start cmd /k "cd /d %cd% && venv\Scripts\activate.bat && echo. && echo ========================================= && echo Testador de API rodando... && echo ========================================= && echo. && python serve_tester.py"
+start "API Tester" cmd /k "cd /d %cd% && venv\Scripts\activate.bat && echo. && echo ========================================= && echo Testador de API rodando... && echo ========================================= && echo. && python serve_tester.py"
 
 REM Aguardar um pouco e abrir o navegador
 timeout /t 3 /nobreak
