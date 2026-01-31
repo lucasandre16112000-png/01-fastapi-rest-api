@@ -1,0 +1,88 @@
+================================================================================
+                    FASTAPI - EXTRAIR MANUALMENTE
+================================================================================
+
+Se o EXTRAIR_E_RODAR.bat não funcionar, siga estes passos SIMPLES:
+
+================================================================================
+PASSO 1: EXTRAIR O ZIP
+================================================================================
+
+1. Clique com botão DIREITO no arquivo ZIP
+2. Selecione "Extrair tudo..."
+3. Escolha um local PERMANENTE:
+   - Desktop
+   - Documents
+   - C:\Projetos\
+   - OU qualquer pasta que você queira
+4. Clique em "Extrair"
+5. Aguarde completar (pode levar alguns segundos)
+
+================================================================================
+PASSO 2: ABRIR A PASTA EXTRAÍDA
+================================================================================
+
+1. Após a extração, a pasta será aberta automaticamente
+2. Se não abrir, navegue até o local onde extraiu
+3. Procure pela pasta "01-fastapi-rest-api"
+
+================================================================================
+PASSO 3: INICIAR A API
+================================================================================
+
+Dentro da pasta "01-fastapi-rest-api", você verá vários arquivos.
+
+Clique DUAS VEZES em um destes:
+
+OPÇÃO A (Recomendado):
+   - INICIAR.bat
+
+OPÇÃO B (Se A não funcionar):
+   - setup.bat (depois clique em run.bat)
+
+OPÇÃO C (Se B não funcionar):
+   - DIAGNOSTICO.bat (para identificar o problema)
+
+================================================================================
+O QUE ACONTECERÁ
+================================================================================
+
+Quando você clicar em INICIAR.bat:
+
+1. Uma janela preta (terminal) abrirá
+2. Você verá mensagens de instalação
+3. Aguarde até ver:
+   "API rodando em: http://127.0.0.1:8000"
+4. O navegador abrirá automaticamente
+5. Você verá a documentação da API (Swagger)
+
+================================================================================
+COMO USAR A API
+================================================================================
+
+A documentação interativa está em:
+   http://127.0.0.1:8000/docs
+
+Você pode testar todos os endpoints lá!
+
+Para parar a API:
+   Pressione CTRL+C na janela do terminal
+
+================================================================================
+PROBLEMAS?
+================================================================================
+
+Se algo não funcionar:
+
+1. Verifique se Python 3.9+ está instalado:
+   https://www.python.org/downloads/
+
+2. Marque "Add Python to PATH" durante a instalação
+
+3. Reinicie o computador
+
+4. Tente novamente
+
+5. Se ainda não funcionar, clique em DIAGNOSTICO.bat para mais detalhes
+
+================================================================================

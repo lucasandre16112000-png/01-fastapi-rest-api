@@ -23,34 +23,45 @@ echo.
 REM Criar pasta
 mkdir "!EXTRACT_PATH!" 2>nul
 
-REM Copiar arquivos com xcopy (simples e confiável)
+REM Usar PowerShell para copiar (mais confiável que xcopy)
 echo Copiando arquivos...
-xcopy "%~dp0*.*" "!EXTRACT_PATH!\" /E /I /Y >nul 2>&1
-
-REM Copiar pasta app especificamente
-if exist "%~dp0app" (
-    xcopy "%~dp0app" "!EXTRACT_PATH!\app\" /E /I /Y >nul 2>&1
-)
-
-REM Limpar venv e .git
-if exist "!EXTRACT_PATH!\venv" rmdir /s /q "!EXTRACT_PATH!\venv" 2>nul
-if exist "!EXTRACT_PATH!\.git" rmdir /s /q "!EXTRACT_PATH!\.git" 2>nul
+powershell -NoProfile -ExecutionPolicy Bypass -Command "^
+$source = '%~dp0'; ^
+$dest = '!EXTRACT_PATH!'; ^
+Get-ChildItem -Path $source -Force | ForEach-Object { ^
+    if ($_.PSIsContainer) { ^
+        if ($_.Name -ne 'venv' -and $_.Name -ne '.git' -and $_.Name -ne '__pycache__') { ^
+            Copy-Item -Path $_.FullName -Destination (Join-Path $dest $_.Name) -Recurse -Force -ErrorAction SilentlyContinue; ^
+        } ^
+    } else { ^
+        Copy-Item -Path $_.FullName -Destination (Join-Path $dest $_.Name) -Force -ErrorAction SilentlyContinue; ^
+    } ^
+}; ^
+exit 0;" >nul 2>&1
 
 REM Verificar se foi copiado
 if not exist "!EXTRACT_PATH!\INICIAR.bat" (
     echo.
     echo ERRO: Falha ao copiar arquivos!
     echo.
-    echo Tente manualmente:
-    echo 1. Clique direito no ZIP
-    echo 2. Selecione "Extrair tudo..."
-    echo 3. Escolha um local permanente
-    echo 4. Abra a pasta extraída
-    echo 5. Clique em INICIAR.bat
+    echo Solucao:
+    echo 1. Extraia o ZIP manualmente:
+    echo    - Clique direito no ZIP
+    echo    - Selecione "Extrair tudo..."
+    echo    - Escolha um local permanente (Desktop, Documents, etc)
+    echo    - Aguarde completar
+    echo.
+    echo 2. Abra a pasta extraída
+    echo.
+    echo 3. Clique DUAS VEZES em INICIAR.bat
     echo.
     pause
     exit /b 1
 )
+
+REM Limpar venv e .git
+if exist "!EXTRACT_PATH!\venv" rmdir /s /q "!EXTRACT_PATH!\venv" 2>nul
+if exist "!EXTRACT_PATH!\.git" rmdir /s /q "!EXTRACT_PATH!\.git" 2>nul
 
 REM Executar INICIAR.bat
 cd /d "!EXTRACT_PATH!"
