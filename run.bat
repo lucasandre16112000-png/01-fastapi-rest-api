@@ -15,6 +15,19 @@ echo.
 echo Diretorio: %cd%
 echo.
 
+REM Verificar se requirements.txt existe
+if not exist "requirements.txt" (
+    echo [ERRO] Arquivo requirements.txt nao encontrado!
+    echo.
+    echo Solucao:
+    echo 1. Extraia o ZIP completamente em um diretório permanente
+    echo 2. NAO execute diretamente do ZIP
+    echo 3. Exemplo: C:\Projetos\01-fastapi-rest-api
+    echo.
+    pause
+    exit /b 1
+)
+
 REM Verificar se Python está instalado
 python --version > nul 2>&1
 if errorlevel 1 (

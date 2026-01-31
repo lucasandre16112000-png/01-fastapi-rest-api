@@ -1,0 +1,114 @@
+================================================================================
+                    FASTAPI - GUIA DE INSTALACAO RAPIDA
+================================================================================
+
+IMPORTANTE: Siga estes passos EXATAMENTE como descrito!
+
+================================================================================
+METODO 1: AUTOMATICO (RECOMENDADO - MAIS FACIL!)
+================================================================================
+
+Se você baixou um arquivo ZIP, NESTE ARQUIVO MESMO:
+
+1. Procure por um destes arquivos:
+   - EXTRAIR_E_RODAR.bat (Windows - Recomendado)
+   - EXTRAIR_E_RODAR.ps1 (Windows - PowerShell)
+   - EXTRAIR_E_RODAR.vbs (Windows - VBS)
+
+2. CLIQUE DUAS VEZES no arquivo escolhido
+
+3. O script irá:
+   ✓ Extrair tudo automaticamente para o Desktop ou Documents
+   ✓ Copiar todos os arquivos para o local correto
+   ✓ Criar o ambiente virtual
+   ✓ Instalar as dependências
+   ✓ Iniciar a API
+   ✓ Abrir o navegador automaticamente
+
+4. Pronto! A API está rodando!
+
+================================================================================
+METODO 2: MANUAL (Se o Método 1 não funcionar)
+================================================================================
+
+1. Extraia o ZIP manualmente:
+   - Clique com botão direito no ZIP
+   - Selecione "Extrair tudo..."
+   - Escolha um local permanente (Desktop, Documents, etc)
+   - Aguarde a extração completar
+
+2. Abra a pasta extraída
+
+3. Dentro da pasta, clique DUAS VEZES em:
+   - INICIAR.bat (Recomendado)
+   OU
+   - setup.bat (depois run.bat)
+
+4. Aguarde a instalação e o navegador abrirá automaticamente
+
+================================================================================
+METODO 3: LINHA DE COMANDO (Para usuários avançados)
+================================================================================
+
+1. Extraia o ZIP
+
+2. Abra o Prompt de Comando (cmd) ou PowerShell
+
+3. Navegue até a pasta extraída:
+   cd C:\Caminho\Para\01-fastapi-rest-api
+
+4. Execute:
+   python -m venv venv
+   venv\Scripts\activate.bat
+   pip install -r requirements.txt
+   uvicorn app.main:app --reload
+
+5. Abra o navegador em: http://127.0.0.1:8000/docs
+
+================================================================================
+PROBLEMAS COMUNS
+================================================================================
+
+PROBLEMA: "requirements.txt not found"
+SOLUÇÃO: Use o METODO 1 (EXTRAIR_E_RODAR.bat)
+         Isso extrai tudo automaticamente para o local correto
+
+PROBLEMA: "Python not found"
+SOLUÇÃO: Instale Python 3.9+ em https://www.python.org/downloads/
+         Marque a opção "Add Python to PATH" durante a instalação
+
+PROBLEMA: "Access denied" ao criar venv
+SOLUÇÃO: Execute como Administrador
+         Clique direito no arquivo > Executar como administrador
+
+PROBLEMA: PowerShell não executa scripts
+SOLUÇÃO: Execute este comando no PowerShell como Administrador:
+         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+PROBLEMA: Nenhum dos métodos funciona
+SOLUÇÃO: Tente o METODO 3 (Linha de comando)
+         Ou entre em contato com suporte
+
+================================================================================
+APOS INICIAR A API
+================================================================================
+
+Você verá no terminal:
+   API rodando em: http://127.0.0.1:8000
+   Documentacao: http://127.0.0.1:8000/docs
+
+O navegador abrirá automaticamente com a documentação interativa (Swagger).
+Você pode testar todos os endpoints diretamente lá!
+
+Para parar a API:
+   Pressione CTRL+C no terminal
+
+================================================================================
+MAIS INFORMACOES
+================================================================================
+
+Documentação completa: README.md
+Instruções detalhadas: INSTRUCOES.md
+Repositório GitHub: https://github.com/lucasandre16112000-png/01-fastapi-rest-api
+
+================================================================================
